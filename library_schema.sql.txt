@@ -1,0 +1,60 @@
+Domain : Library Management System
+Entities & Relationships
+Entity	Attributes
+Books	BookID (PK), Title, Author, Genre, ISBN, PublishedYear, CopiesAvailable
+Members	MemberID (PK), Name, Email, Phone, JoinDate
+Loans	LoanID (PK), MemberID (FK), BookID (FK), IssueDate, ReturnDate
+Staff	StaffID (PK), Name, Position, Email, Phone
+Relationships:
+•	One Member can borrow many Books → One-to-Many
+•	One Book can be issued in many Loans → One-to-Many
+•	Loans table connects Books and Members
+•	Staff may be optional if not managing loans directly
+________________________________________
+SQL Script to Create Schema
+sql
+CopyEdit
+-- Create Database
+CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
+-- Books Table
+CREATE TABLE Books (
+    BookID INT PRIMARY KEY AUTO_INCREMENT,
+    Title VARCHAR(100),
+    Author VARCHAR(100),
+    Genre VARCHAR(50),
+    ISBN VARCHAR(20) UNIQUE,
+    PublishedYear YEAR,
+    CopiesAvailable INT
+);
+
+Members Table
+CREATE TABLE Members (
+    MemberID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100),
+    Email VARCHAR(100) UNIQUE,
+    Phone VARCHAR(15),
+    JoinDate DATE
+);
+
+Staff Table
+CREATE TABLE Staff (
+    StaffID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100),
+    Position VARCHAR(50),
+    Email VARCHAR(100) UNIQUE,
+    Phone VARCHAR(15)
+);
+
+Loans Table
+CREATE TABLE Loans (
+    LoanID INT PRIMARY KEY AUTO_INCREMENT,
+    MemberID INT,
+    BookID INT,
+    IssueDate DATE,
+    ReturnDate DATE,
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID),
+    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+);
+
